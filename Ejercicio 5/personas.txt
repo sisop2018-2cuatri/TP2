@@ -1,0 +1,3 @@
+IdPersonas;DNI;Apellido_y_Nombre;idPais
+1;1234567;Pereira, Lucas;1
+2;4456789;Gallo, Juan;1
