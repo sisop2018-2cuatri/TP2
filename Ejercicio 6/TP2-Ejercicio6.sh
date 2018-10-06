@@ -1,5 +1,36 @@
 #! /bin/bash
 
+# mensaje de ayuda
+if [[ $1 == -h ]] || [[ $1 == -help ]] || [[ $1 == -? ]]; then
+  	echo "`basename $0` versión 1.0.0"
+  	echo "Monitorea eventos en los archivos dentro de un directorio"
+	echo "Uso: ./TP2-Ejercicio6.sh directorio extensiones"
+	echo "Parametros:"
+	echo '	$1: path del directorio en donde se monitorearán los archivos'
+	echo '	$2: tipo(s) de archivo(s) a monitorear, puede usar \* para incluir todos'
+	echo "Ejemplos de uso:"
+	echo "	ejemplo 1: ./TP2-Ejercicio6.sh ./midirectorio \*"
+	echo "	ejemplo 2: ./TP2-Ejercicio6.sh ./midirectorio .doc"
+	echo "	ejemplo 3: ./TP2-Ejercicio6.sh ./midirectorio .doc,.xls"
+	echo "	ejemplo 4: ./TP2-Ejercicio6.sh ./midirectorio/subdir/ .txt,.doc,.xls"
+	echo ""
+    echo "Sistemas Operativos"
+    echo "-------------------"
+	echo "Trabajo Práctico N°2"
+	echo "Ejercicio 6"
+	echo "Script: .\TP2-Ejercicio6.sh"
+    echo "-------------------"
+	echo "Integrantes:"
+	echo "	Avila, Leandro - 35.537.983"
+	echo "	Di Lorenzo, Maximiliano - 38.166.442"
+	echo "	Lorenz, Lautaro - 37.661.245"
+	echo "	Mercado, Maximiliano - 37.250.369"
+	echo "	Sequeira, Eliana - 39.061.003"
+
+  	# fin mensaje de ayuda
+  	exit 0
+fi
+
 # el parámetro $1 debe ser el path del directorio para analizar
 DIRECTORIO=$1 
 
@@ -9,7 +40,7 @@ if ! [[ -d $DIRECTORIO ]]; then
 	echo "ERROR: el primer parámetro debe ser un directorio del sistema"
 	exit 1
 else
-	echo "directorio aceptado"
+	echo "directorio $DIRECTORIO"
 fi
 
 # en $2 solicitamos las extensiones de los archivos para monitorear
@@ -24,132 +55,61 @@ fi
 
 # monitoreo de archivos según su tipo
 # -----------------------------------
+declare -a TIPOS_ACEPTADOS=() # tipos de archivos aceptados
 if [ "$EXTENSIONES" == "*" ]; then
 	# si ingresaron \* monitorear todos los archivos
 	echo "monitorear los archivos independientemente de que tipo sean"
+
+	# indicar que todos los tipos son aceptados para monitorear
+	TIPOS_ACEPTADOS[0]="TODOS"
 else
-	# se deberán monitorear múltiples extenciones
+	# se deberán monitorear múltiples extensiones
+	echo "listado de extensiones ingresadas:"
 	
+	IFS=',' read -ra ADDR <<< "$EXTENSIONES"
+	for i in "${ADDR[@]}"; do
+		extension="extensión ["$i"]"
+
+		# validar que la extensión comience con punto
+		if ! [[ $i == .* ]]; then 
+			echo "ERROR: la "$extension" debe comenzar con el caracter punto (.)"
+			exit 1
+		fi
+
+		# si la extensión fue aceptada
+		echo " - "$extension
+		TIPOS_ACEPTADOS+=($i)
+	done
 fi
 
-# else
-#	echo "ERROR: el(los) tipo(s) de archivo ingresado(s) no fueron aceptado(s)"
-#	exit 1
-# fi
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# contiene el último evento mostrado
+ULTIMO_EVENTO="" 
+
+# ejecutar comando de monitoreo (requiere inotify-tools)
+inotifywait --format "%e %f %T" --timefmt "%F %T" --monitor $DIRECTORIO |
+  while read evento nombre fechahora; do  # cuando ocurre un evento
+	flag_monitorear_evento=0 # true si es un evento que debemo monitorerar
+
+	if [[ ${TIPOS_ACEPTADOS[0]} == TODOS ]]; then 
+		# si debo monitorear todos los archivos del directorio
+		flag_monitorear_evento=1
+	else 
+		# verificar si el archivo del evento es de un tipo que debo monitorear
+		for i in "${TIPOS_ACEPTADOS[@]}"; do
+			if [[ $nombre == *$i ]]; then 
+				# si es un tipo de archivo a monitorear
+				flag_monitorear_evento=1
+			fi
+		done
+	fi
+
+	# si el evento es en un archivo monitoreado
+	if [ $flag_monitorear_evento == 1 ]; then
+		# si el evento a mostrar es distinto al último mostrado
+		if ! [[ $ULTIMO_EVENTO == "[$fechahora] $nombre $evento" ]]; then
+			# mostrar datos del evento
+			ULTIMO_EVENTO="[$fechahora] $nombre $evento"
+			echo $ULTIMO_EVENTO
+		fi
+	fi
+done
