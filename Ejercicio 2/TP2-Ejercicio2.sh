@@ -31,17 +31,17 @@ Calcular ()
 {
  if [ ! $3 -eq 0 ];
  then
- echo "Ejecucion $3:  ( Parametro 1 = $1 | Parametro 2 = $2 | Parametro 3 = $3 )" >> salida.txt
- Calcular $2 $(expr $1 + $2) $(expr $3 - 1)
+ echo "Ejecucion $4:  ( Parametro 1 = $1 | Parametro 2 = $2 | Parametro 3 = $3 )" >> salida.txt
+ Calcular $2 $(expr $1 + $2) $(expr $3 - 1) $(expr $4 + 1)
  else
  #si no vuelvo a imprimir esta linea no muestra el ultimo paso porque salio antes.
- echo "Ejecucion $3:  ( Parametro 1 = $1 | Parametro 2 = $2 | Parametro 3 = $3 )" >> salida.txt
+ echo "Ejecucion $4:  ( Parametro 1 = $1 | Parametro 2 = $2 | Parametro 3 = $3 )" >> salida.txt
  echo $2
  fi
 }
 
 verificar_parametros $1
-Calcular 0 1 $1
+Calcular 0 1 $1 1
 exit 0
 
 
