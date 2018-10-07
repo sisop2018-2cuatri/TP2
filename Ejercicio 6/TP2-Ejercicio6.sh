@@ -2,24 +2,28 @@
 
 # mensaje de ayuda
 if [[ $1 == -h ]] || [[ $1 == -help ]] || [[ $1 == -? ]]; then
-  	echo "`basename $0` versión 1.0.0"
-  	echo "Monitorea eventos en los archivos dentro de un directorio"
+	echo "`basename $0` versión 1.0.0"
+	echo "Monitorea eventos en los archivos dentro de un directorio"
 	echo "Uso: ./TP2-Ejercicio6.sh directorio extensiones"
 	echo "Parametros:"
 	echo '	$1: path del directorio en donde se monitorearán los archivos'
 	echo '	$2: tipo(s) de archivo(s) a monitorear, puede usar \* para incluir todos'
+	echo "Opcional: puede usar los comodines (*?) en los tipos de archivo"
 	echo "Ejemplos de uso:"
-	echo "	ejemplo 1: ./TP2-Ejercicio6.sh ./midirectorio \*"
+	echo "	ejemplo 1: ./TP2-Ejercicio6.sh ~/midirectorio/ \*"
 	echo "	ejemplo 2: ./TP2-Ejercicio6.sh ./midirectorio .doc"
-	echo "	ejemplo 3: ./TP2-Ejercicio6.sh ./midirectorio .doc,.xls"
+	echo "	ejemplo 3: ./TP2-Ejercicio6.sh ./midirectorio/ .doc,.xls"
 	echo "	ejemplo 4: ./TP2-Ejercicio6.sh ./midirectorio/subdir/ .txt,.doc,.xls"
+	echo "	ejemplo 5: ./TP2-Ejercicio6.sh ./midirectorio/subdir/ .t*"
+	echo "	ejemplo 6: ./TP2-Ejercicio6.sh ./midirectorio/subdir/ .ab*,.txt"
+	echo "	ejemplo 7: ./TP2-Ejercicio6.sh ./midirectorio/subdir/ .txt,.doc,.xls?"
 	echo ""
-    echo "Sistemas Operativos"
-    echo "-------------------"
+	echo "Sistemas Operativos"
+	echo "-------------------"
 	echo "Trabajo Práctico N°2"
 	echo "Ejercicio 6"
-	echo "Script: .\TP2-Ejercicio6.sh"
-    echo "-------------------"
+	echo "Script: ./TP2-Ejercicio6.sh"
+	echo "-------------------"
 	echo "Integrantes:"
 	echo "	Avila, Leandro - 35.537.983"
 	echo "	Di Lorenzo, Maximiliano - 38.166.442"
@@ -88,7 +92,7 @@ ULTIMO_EVENTO=""
 # ejecutar comando de monitoreo (requiere inotify-tools)
 inotifywait --format "%e %f %T" --timefmt "%F %T" --monitor $DIRECTORIO |
   while read evento nombre fechahora; do  # cuando ocurre un evento
-	flag_monitorear_evento=0 # true si es un evento que debemo monitorerar
+	flag_monitorear_evento=0 # 1 si es un evento que debemo monitorerar
 
 	if [[ ${TIPOS_ACEPTADOS[0]} == TODOS ]]; then 
 		# si debo monitorear todos los archivos del directorio
