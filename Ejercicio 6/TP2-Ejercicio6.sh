@@ -9,6 +9,7 @@ if [[ $1 == -h ]] || [[ $1 == -help ]] || [[ $1 == -? ]]; then
 	echo '	$1: path del directorio en donde se monitorearán los archivos'
 	echo '	$2: tipo(s) de archivo(s) a monitorear, puede usar \* para incluir todos'
 	echo "Opcional: puede usar los comodines (*?) en los tipos de archivo"
+	echo "Requiere: inotify-tools"
 	echo "Ejemplos de uso:"
 	echo "	ejemplo 1: ./TP2-Ejercicio6.sh ~/midirectorio/ \*"
 	echo "	ejemplo 2: ./TP2-Ejercicio6.sh ./midirectorio .doc"
