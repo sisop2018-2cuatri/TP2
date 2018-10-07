@@ -7,9 +7,8 @@ if [[ $1 == -h ]] || [[ $1 == -help ]] || [[ $1 == -? ]]; then
 	echo "Uso: ./TP2-Ejercicio6.sh directorio extensiones"
 	echo "Parametros:"
 	echo '	$1: path del directorio en donde se monitorearán los archivos'
-	echo '	$2: tipo(s) de archivo(s) a monitorear, puede usar \* para incluir todos'
+	echo '	$2: tipo(s) de archivo(s) a monitorear, puede usar \* para incluir todos los tipos'
 	echo "Opcional: puede usar los comodines (*?) en los tipos de archivo"
-	echo "Requiere: inotify-tools"
 	echo "Ejemplos de uso:"
 	echo "	ejemplo 1: ./TP2-Ejercicio6.sh ~/midirectorio/ \*"
 	echo "	ejemplo 2: ./TP2-Ejercicio6.sh ./midirectorio .doc"
@@ -18,6 +17,9 @@ if [[ $1 == -h ]] || [[ $1 == -help ]] || [[ $1 == -? ]]; then
 	echo "	ejemplo 5: ./TP2-Ejercicio6.sh ./midirectorio/subdir/ .t*"
 	echo "	ejemplo 6: ./TP2-Ejercicio6.sh ./midirectorio/subdir/ .ab*,.txt"
 	echo "	ejemplo 7: ./TP2-Ejercicio6.sh ./midirectorio/subdir/ .txt,.doc,.xls?"
+	echo "Salida: para cada evento se obtendrá en terminal un mensaje como el siguiente"
+	echo "	[%Y-%m-%d %H:%M:%S] archivo EVENTO"
+	echo "Requiere: inotify-tools"
 	echo ""
 	echo "Sistemas Operativos"
 	echo "-------------------"
@@ -93,7 +95,7 @@ ULTIMO_EVENTO=""
 # ejecutar comando de monitoreo (requiere inotify-tools)
 inotifywait --format "%e %f %T" --timefmt "%F %T" --monitor $DIRECTORIO |
   while read evento nombre fechahora; do  # cuando ocurre un evento
-	flag_monitorear_evento=0 # 1 si es un evento que debemo monitorerar
+	flag_monitorear_evento=0 # vale 1 cuando es un evento que debemos monitorerar
 
 	if [[ ${TIPOS_ACEPTADOS[0]} == TODOS ]]; then 
 		# si debo monitorear todos los archivos del directorio
@@ -110,10 +112,11 @@ inotifywait --format "%e %f %T" --timefmt "%F %T" --monitor $DIRECTORIO |
 
 	# si el evento es en un archivo monitoreado
 	if [ $flag_monitorear_evento == 1 ]; then
+		nuevo_evento="[$fechahora] $nombre $evento"
 		# si el evento a mostrar es distinto al último mostrado
-		if ! [[ $ULTIMO_EVENTO == "[$fechahora] $nombre $evento" ]]; then
+		if ! [[ $ULTIMO_EVENTO == $nuevo_evento ]]; then
 			# mostrar datos del evento
-			ULTIMO_EVENTO="[$fechahora] $nombre $evento"
+			ULTIMO_EVENTO=$nuevo_evento
 			echo $ULTIMO_EVENTO
 		fi
 	fi
