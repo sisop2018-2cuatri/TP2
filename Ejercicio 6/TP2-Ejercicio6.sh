@@ -7,9 +7,8 @@ if [[ $1 == -h ]] || [[ $1 == -help ]] || [[ $1 == -? ]]; then
 	echo "Uso: ./TP2-Ejercicio6.sh directorio extensiones"
 	echo "Parametros:"
 	echo '	$1: path del directorio en donde se monitorearán los archivos'
-	echo '	$2: tipo(s) de archivo(s) a monitorear, puede usar \* para incluir todos'
+	echo '	$2: tipo(s) de archivo(s) a monitorear, puede usar \* para incluir todos los tipos'
 	echo "Opcional: puede usar los comodines (*?) en los tipos de archivo"
-	echo "Requiere: inotify-tools"
 	echo "Ejemplos de uso:"
 	echo "	ejemplo 1: ./TP2-Ejercicio6.sh ~/midirectorio/ \*"
 	echo "	ejemplo 2: ./TP2-Ejercicio6.sh ./midirectorio .doc"
@@ -18,6 +17,9 @@ if [[ $1 == -h ]] || [[ $1 == -help ]] || [[ $1 == -? ]]; then
 	echo "	ejemplo 5: ./TP2-Ejercicio6.sh ./midirectorio/subdir/ .t*"
 	echo "	ejemplo 6: ./TP2-Ejercicio6.sh ./midirectorio/subdir/ .ab*,.txt"
 	echo "	ejemplo 7: ./TP2-Ejercicio6.sh ./midirectorio/subdir/ .txt,.doc,.xls?"
+	echo "Salida: para cada evento se obtendrá en terminal un mensaje como el siguiente"
+	echo "	[YYYY-MM-DD HH:mm:ss] archivo EVENTO"
+	echo "Requiere: inotify-tools"
 	echo ""
 	echo "Sistemas Operativos"
 	echo "-------------------"
