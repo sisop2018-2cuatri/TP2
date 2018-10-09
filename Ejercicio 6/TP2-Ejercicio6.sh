@@ -5,7 +5,7 @@ if [[ $1 == -h ]] || [[ $1 == -help ]] || [[ $1 == -? ]]; then
 	echo "`basename $0` versión 1.0.0"
 	echo "Monitorea eventos en los archivos dentro de un directorio"
 	echo "Uso: ./TP2-Ejercicio6.sh directorio extensiones"
-	echo "Parametros:"
+	echo "Parámetros:"
 	echo '	$1: path del directorio en donde se monitorearán los archivos'
 	echo '	$2: tipo(s) de archivo(s) a monitorear, puede usar \* para incluir todos los tipos'
 	echo "Opcional: puede usar los comodines (*?) en los tipos de archivo"
@@ -53,9 +53,9 @@ fi
 # en $2 solicitamos las extensiones de los archivos para monitorear
 EXTENSIONES=$2
 
-# validar que el segundo parametro no esté vacio
+# validar que el segundo parámetro no esté vacio
 if [ -z "$EXTENSIONES" ]; then 
-	echo "ERROR: el segundo parametro debe indicar los tipos de archivo para monitorear"
+	echo "ERROR: el segundo parámetro debe indicar los tipos de archivo para monitorear"
 	echo "INFORMARCIÓN ADICIONAL: para todos los tipos de archivo puede usar \*"
 	exit 1
 fi
