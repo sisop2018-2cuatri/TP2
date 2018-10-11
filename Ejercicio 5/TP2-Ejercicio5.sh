@@ -36,6 +36,29 @@ get_help() {
     exit 0
 }
 
+verificar_parametros_1()
+{
+  
+  if [ $# -ne 2 ]
+    then
+	echo 'Cantidad de parametros invalido'
+	exit -1
+    fi
+   
+}
+
+
+
+verificar_parametros_2()
+{
+  if [ $# -ne 5 ]
+    then
+	echo 'Cantidad de parametros invalido'
+	exit -1
+    fi
+   
+}
+
 verificar_path()
 {
   if [ -f $1 ]
@@ -67,6 +90,8 @@ case $1 in
 	
 	 -d|-D)
 	    	
+
+		verificar_parametros_1 $@ 
 		IFS=";" tokens=( `grep $2 $dirPersonas` )
 
 		if [ ${#tokens[@]} -gt 0 ]
@@ -75,9 +100,9 @@ case $1 in
 		else
 		  echo "DNI Inexistente"
 		fi;;		
-	
+	      
 	 -a|-A)
-         	 
+         	verificar_parametros_2 $@
 		IFS=';' tokens=( `grep $5 $dirPaises` )
 		 
 		if [ ${#tokens[@]} -gt 0 ]
@@ -98,7 +123,7 @@ case $1 in
         
      -e|-E)
         
-	
+	 verificar_parametros_1 $@
 	 IFS=";" tokens=( `grep $2 $dirPersonas` ) 
 	 
 	if [ ${#tokens[0]} -gt 0 ]
@@ -112,6 +137,7 @@ case $1 in
          
      -p|-P)
          
+         verificar_parametros_1 $@
 	 IFS=';' tokens=( `grep $2 $dirPaises` ) 
 
 	if [ ${#tokens[0]} -gt 0 ]
