@@ -78,6 +78,6 @@ fi
 
 
 FECHA=`date '+%Y-%m-%d--%H:%M:%S'`
-echo "$FECHA Ejecutando EventListener: " 
+echo "$FECHA Ejecutando Proceso de escucha de signals: " 
 ./.listener.sh &
-echo "PID del listener:"$!
+echo "PID del Proceso: "$!
