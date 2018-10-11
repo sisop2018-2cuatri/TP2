@@ -6,8 +6,8 @@ sigusr1(){
 	echo "Fecha: `date '+%Y/%m/%d'`"
 	echo "Hora:`date '+%H:%M:%S'`"
 	echo "CPU en uso: `top -b -n1 | grep "Cpu(s)" | awk '{print $2+$4+$6}'`%"
-	echo "Memoria en uso: `top -b -n1 | grep "Mem :" | awk '{print ($8/(1024^2))}'` GB"
-	echo "Memoria disponible `top -b -n1 | grep "Mem :" | awk '{print ($6/(1024^2))}'` GB"
+	echo "Memoria en uso: `free | grep "Mem:" | awk '{print $3}'` MB"
+	echo "Memoria disponible `free | grep "Mem:" | awk '{print $4}'` MB"
 }
 sigusr2(){
 	echo "####USERSIGNAL2 atrapada####"
