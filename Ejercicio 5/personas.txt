@@ -1,1 +1,4 @@
-IdPersona;DNI;Apellido_y_Nombre;idPais
+IdPersona;DNI;Apellido_y_Nombre;IdPais
+1;35537983;Avila,Leandro;1
+2;1234567;Pereira,Lucas;1
+3;4456789;Gallo,Juan;2
