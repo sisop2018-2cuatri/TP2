@@ -44,14 +44,13 @@ verificar_parametros_1()
 	echo 'Cantidad de parametros invalido'
 	exit -1
     fi
-   
 }
 
 
 
 verificar_parametros_2()
 {
-  if [ $# -ne 5 ]
+ if [[ $# -ne 5 && $4 =~ ^[a-zA-Z]+@[a-zA-Z] ]]
     then
 	echo 'Cantidad de parametros invalido'
 	exit -1
@@ -84,24 +83,27 @@ verificar_path $dirPersonas $dirPaises
 case $1 in
 	 
 
-	 -h|-H|-help)
+	 -h|-help)
 		
 		get_help;;
 	
-	 -d|-D)
+	 -d)
 	    	
 
 		verificar_parametros_1 $@ 
 		IFS=";" tokens=( `grep $2 $dirPersonas` )
-
-		if [ ${#tokens[@]} -gt 0 ]
+	
+		if [ ${#tokens[@]} -eq 0 ]
 		then
-		  join -1 4 -2 1 -t \; $dirPersonas $dirPaises | awk -v var=$2 -F ";" 'match( $3,var ) {print $2,$3,$4,$5}' OFS=';'
+		  echo "DNI $2 Inexistente"
+
 		else
-		  echo "DNI Inexistente"
-		fi;;		
+		  join -1 4 -2 1 -t \; $dirPersonas $dirPaises | awk -v var=$2 -F ";" ' $3==var {print $2";"$3";"$4","$5,$6}'
+		  
+		fi
+;;		
 	      
-	 -a|-A)
+	 -a)
          	verificar_parametros_2 $@
 		IFS=';' tokens=( `grep $5 $dirPaises` )
 		 
@@ -114,14 +116,22 @@ case $1 in
 		   awk -v pathPaises=$dirPaises -v idPais=$numLineasPais -v nombrePais=$5 'NR==idPais {print idPais, nombrePais >> pathPaises }' OFS=";" $dirPaises
 		fi
   
-		
-		numLineas=$(wc -l < "$dirPersonas")
-		 awk -v path=$dirPersonas -v IdPersona=$numLineas -v DNI=$2 -v Apellido=$3 -v Nombre=$4 -v IdPais=$numLineasPais -F ";" '    NR==IdPersona 	{ print IdPersona,DNI, Apellido", "Nombre, IdPais  >> path}' OFS=';' $dirPersonas
+		IFS=';' tokens=( `grep $2 $dirPersonas` )
+		 
+		if [ ${#tokens[@]} -eq 0 ]
+		then		 
 
+		numLineas=$(wc -l < "$dirPersonas")
+		
+		 awk -v path=$dirPersonas -v IdPersona=$numLineas -v DNI=$2 -v Apellido=$3 -v Nombre=$4 -v IdPais=$numLineasPais -F ";" ' NR==IdPersona { print IdPersona";"DNI";"Apellido","Nombre";"IdPais  >> path}' $dirPersonas
+                
+		else
+			echo "DNI duplicado"
+		fi
 		
 		;;
         
-     -e|-E)
+     -e)
         
 	 verificar_parametros_1 $@
 	 IFS=";" tokens=( `grep $2 $dirPersonas` ) 
@@ -135,17 +145,22 @@ case $1 in
 	   echo 'DNI Inexistente'
 	fi;;
          
-     -p|-P)
+     -p)
          
          verificar_parametros_1 $@
 	 IFS=';' tokens=( `grep $2 $dirPaises` ) 
 
 	if [ ${#tokens[0]} -gt 0 ]
 	then         
-	  join -1 4 -2 1 -t \; $dirPersonas $dirPaises | awk -v var=$2 -F ";" 'match( $5,var ) {print $2,$3,$4,$5}' OFS=';'
+	  join -1 4 -2 1 -t \; $dirPersonas $dirPaises | awk -v var=$2 -F ";" ' $5==var {print $2,$3,$4,$5}' OFS=';'
 	else
 	  echo 'No hay personas de ese pais'         
 	fi;;
 
-	*)    echo "Opción incorrecta , pruebe de nuevo";;
+	*)    echo "Opción incorrecta"
+	      echo "Elija -d DNI , para seleccionar un dni."
+              echo "Elija -e DNI , para eliminar un registro."
+              echo "Elija -a DNI Apellido NOmbre NombrePais , para agregar un registro."
+              echo "Elija -p NombrePais , para seleccionar registros de ese pais."
+;;
 esac
