@@ -14,19 +14,19 @@
 
 get_help(){
  echo ""
-    echo 'Ejemplo: ./TP2-Ejercicio3.sh carta_modelo.txt valores.csv'
+    echo "Ejemplo: ./TP2-Ejercicio3.sh carta_modelo.txt valores.csv"
     echo ""
-    echo 'Parametro1: ruta del archivo txt con la carta con los tags a reemplazar'
+    echo "Parametro1: ruta del archivo txt con la carta con los tags a reemplazar"
     echo ""
-    echo 'Parametro2: ruta del archivo csv separado por ";" con los valores a reemplazar en los tags de las cartas'
+    echo "Parametro2: ruta del archivo csv separado por ";" con los valores a reemplazar en los tags de las cartas"
     echo ""
-    echo 'Descripcion: Este scrip toma el primer archivo pasado por parametro y reemplaza las palabras que empiezan con "@ej" por los valores del segundo archivo que coinciden con el nombre, se generan las nuevas cartas por cada registro del segundo archivo, y se guardan en una carpeta que se crea en el directorio donde se corre el script '
+    echo "Descripcion: Este scrip toma el primer archivo pasado por parametro y reemplaza las palabras que empiezan con '@ej' por los valores del segundo archivo que coinciden con el nombre, se generan las nuevas cartas por cada registro del segundo archivo, y se guardan en una carpeta que se crea en el directorio donde se corre el script"
 echo ""
 exit 0
 }
 
 
-if [ $1 = '-h' -o $1 = '-?' -o $1 = '-help' ]
+if [ "$1" = "-h" ] || [ "$1" = "-?" ] || [ "$1" = "-help" ]
  then
  get_help
  exit 1
@@ -91,7 +91,7 @@ do
       do
 	title="@${header[index]}"	
 	new=${val[index]}
-        sed -i -e "s|${title}|${new}|gI" "$file_new"
+        sed -i -e "s|${title}\b|${new}|gI" "$file_new"
       done
    fi
 let "i++"
