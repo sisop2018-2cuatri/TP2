@@ -3,8 +3,3 @@ Ejecucion 2: 1
 Ejecucion 3: 2
 Ejecucion 4: 3
 Ejecucion 5: 5
-Ejecucion 6: 8
-Ejecucion 7: 13
-Ejecucion 8: 21
-Ejecucion 9: 34
-Ejecucion 10: 55

@@ -53,8 +53,8 @@ fi
 
 if [[ $1 -eq 0 ]];
 then
-echo "Ejecucion 1: 1" >> "`pwd`/salida.txt"
-echo "Ejecucion exitosa... valores guardados en `pwd`/salida.txt"
+touch "`pwd`/salida.txt"
+echo "Archivo salida.txt creado"
 else
 Calcular 0 1 $1 1
 fi
