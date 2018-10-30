@@ -18,20 +18,6 @@ get_help() {
     echo ""
     echo 'Descripcion: Este script simula la gestion de una base de datos con un archivo csv en el cual se pueden listar, agregar o eliminar personas'
     echo ""
-    echo ""
-    echo "Sistemas Operativos"
-    echo "-------------------"
-    echo "Trabajo Práctico N°2"
-    echo "Ejercicio 5"
-    echo "Script: ./TP2-Ejercicio5.sh"
-    echo "-------------------"
-    echo "Integrantes:"
-    echo "	Avila, Leandro - 35.537.983"
-    echo "	Di Lorenzo, Maximiliano - 38.166.442"
-    echo "	Lorenz, Lautaro - 37.661.245"
-    echo "	Mercado, Maximiliano - 37.250.369"
-    echo "	Sequeira, Eliana - 39.061.003"
-    echo ""
     # fin mensaje de ayuda
     exit 0
 }
@@ -41,7 +27,7 @@ verificar_parametros_1()
   
   if [ $# -ne 2 ]
     then
-	echo 'Cantidad de parametros invalido'
+	echo 'Cantidad de parametros invalida'
 	exit -1
     fi
 }
