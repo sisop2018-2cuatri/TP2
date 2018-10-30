@@ -5,7 +5,7 @@ get_help() {
     
     #mensaje de ayuda
     echo "`basename $0` version 1.0.0" 
-    echo "Calcula fibonacci hasta un numero maximo que se envia por parametros"
+    echo "Calcula fibonacci hasta un numero maximo que se envia por parametro"
     echo "Uso: ./TP2-Ejercicio2.sh numeroMaximo"
     echo "Parametros:"
     echo ' $1: numero entero que sirve como maximo valor a calcular en la serie'
@@ -45,8 +45,19 @@ Calcular ()
 }
 
 verificar_parametros $1
+
+if [ -f "`pwd`/salida.txt" ];
+then
 rm "`pwd`/salida.txt"
+fi
+
+if [[ $1 -eq 0 ]];
+then
+echo "Ejecucion 1: 1" >> "`pwd`/salida.txt"
+echo "Ejecucion exitosa... valores guardados en `pwd`/salida.txt"
+else
 Calcular 0 1 $1 1
+fi
 exit 0
 
 
