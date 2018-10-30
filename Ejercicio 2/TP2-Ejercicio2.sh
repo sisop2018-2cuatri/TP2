@@ -2,31 +2,18 @@
 
 
 get_help() {
-   
-    echo ""
-    echo 'Nombre: ./TP2-Ejercicio2.sh <CantMax>'
-    echo ""
-    echo 'Parametro: <CantMax> --- es un parametro con la cantidad maxima de veces a calcular'
-    echo ""
-    echo 'Ejemplo: ./TP2-Ejercicio2.sh 5'
-    echo ""
-    echo 'Descripcion: Este script muestra de manera recursiva un parametro calculado una cantidad  maxima de veces y guarda la secuencia de pasos en un archivo salida.txt'
-    echo ""
-    echo ""
-    echo "Sistemas Operativos"
-    echo "-------------------"
-    echo "Trabajo Práctico N°2"
-    echo "Ejercicio 2"
-    echo "Script: ./TP2-Ejercicio2.sh"
-    echo "-------------------"
-    echo "Integrantes:"
-    echo "	Avila, Leandro - 35.537.983"
-    echo "	Di Lorenzo, Maximiliano - 38.166.442"
-    echo "	Lorenz, Lautaro - 37.661.245"
-    echo "	Mercado, Maximiliano - 37.250.369"
-    echo "	Sequeira, Eliana - 39.061.003"
-    echo ""
-    # fin mensaje de ayuda
+    
+    #mensaje de ayuda
+    echo "`basename $0` version 1.0.0" 
+    echo "Calcula fibonacci hasta un numero maximo que se envia por parametro"
+    echo "Uso: ./TP2-Ejercicio2.sh numeroMaximo"
+    echo "Parametros:"
+    echo ' $1: numero entero que sirve como maximo valor a calcular en la serie'
+    echo "Ejemplos de uso:"
+    echo "./TP2-Ejercicio2.sh 5"
+    echo "Salida: se mostrara por pantalla el numero de la serie anterior al numero maximo o el mismo en caso de estar en la serie, a su vez se guardara en un archivo salida.txt el resultado de cada paso calculado en la serie"
+    
+    #fin de mensaje de ayuda
     exit 0
 }
 
@@ -39,29 +26,38 @@ if [ $# -ne 1 ]
  exit -1
 fi
 
-if [ $1 = '-h' -o $1 = '-?' -o $1 = '-help' ]
+if [[ $1 == -h ]] || [[ $1 == -help ]] || [[ $1 == -? ]];
  then
  get_help
- exit 1
 fi
 }
 
 Calcular ()
 {
- if [ ! $3 -eq 0 ];
+  
+ if [[ $2 -le $3 ]];
  then
- echo "Ejecucion $4:  ( Parametro 1 = $1 | Parametro 2 = $2 | Parametro 3 = $3 )" >> salida.txt
- Calcular $2 $(expr $1 + $2) $(expr $3 - 1) $(expr $4 + 1)
+ echo "Ejecucion $4: $2" >> "`pwd`/salida.txt"
+ Calcular $2 $(expr $1 + $2) $3 $(expr $4 + 1)	
  else
- #si no vuelvo a imprimir esta linea no muestra el ultimo paso porque salio antes.
- echo "Ejecucion $4:  ( Parametro 1 = $1 | Parametro 2 = $2 | Parametro 3 = $3 )" >> salida.txt
- echo $2
+ echo "Ejecucion exitosa... valores guardados en `pwd`/salida.txt"
  fi
 }
 
 verificar_parametros $1
-rm salida.txt
+
+if [ -f "`pwd`/salida.txt" ];
+then
+rm "`pwd`/salida.txt"
+fi
+
+if [[ $1 -eq 0 ]];
+then
+echo "Ejecucion 1: 1" >> "`pwd`/salida.txt"
+echo "Ejecucion exitosa... valores guardados en `pwd`/salida.txt"
+else
 Calcular 0 1 $1 1
+fi
 exit 0
 
 
