@@ -50,6 +50,7 @@ then
 	    fi	
 else
 	    echo "La cantidad de parámetros ingresados no es correcta"
+	    echo "Utilizar -h/-?/-help para ver la ayuda"
 	    exit 0
 fi
 
